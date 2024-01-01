@@ -1,0 +1,114 @@
+﻿@model UploadEditDeleteImageWithDapperNetCore_Demo.ViewModels.SpeakerViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Edit Speaker</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input hidden asp-for="f_uid" />
+                <input hidden asp-for="f_iid" />
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group row">
+                            <label asp-for="f_fname" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <input asp-for="f_fname" class="form-control" placeholder="First Name">
+                            </div>
+                            <span asp-validation-for="f_fname" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="f_lname" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <input asp-for="f_lname" class="form-control" placeholder="Last Name">
+                            </div>
+                            <span asp-validation-for="f_fname" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="f_gender" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <select asp-for="f_gender" class="form-select" asp-items="Html.GetEnumSelectList<Gender>()">
+                                    <option selected="selected" value="@Model.f_gender">Please select</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="f_gender" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="f_speach_date" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <input asp-for="f_speach_date" class="form-control" placeholder="Choose Date">
+                            </div>
+                            <span asp-validation-for="f_speach_date" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="f_speach_time" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <input asp-for="f_speach_time" class="form-control" placeholder="Choose Time">
+                            </div>
+                            <span asp-validation-for="f_speach_time" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="f_speach_venue" class="col-sm-2 col-form-label"></label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="f_speach_venue" class="form-control" placeholder="Speach Venue"></textarea>
+                            </div>
+                            <span asp-validation-for="f_speach_venue" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="f_speaker_photo" class="col-sm-2 col-form-label"></label>
+                            <div class="custom-file col-sm-10">
+                                <input asp-for="f_speaker_photo" class="custom-file-input" />
+                                <label class="custom-file-label" for="customFile">Choose file</label>
+                            </div>
+                            <span asp-validation-for="f_speaker_photo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div id="image-holder">
+                            <img src="~/Uploads/@Model.f_existing_photo" class="img-thumbnail" height="350" width="285" asp-append-version="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="float:right">
+                    <input type="submit" value="Save" class="btn btn-md btn-primary rounded-0" />
+                    <a href="@Url.Action("Index", "Speakers")" class="btn btn-md btn-primary rounded-0"><i class="fa-solid fa-backward"></i> Back to List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        $("#f_speaker_photo").on('change', function () {
+            if (typeof (FileReader) != "undefined") {
+                var image_holder = $("#image-holder");
+                image_holder.empty()
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("<img />", {
+                        "src": e.target.result,
+                        "class": "img-thumbnail"
+                    }).appendTo(image_holder);
+                }
+                image_holder.show();
+                reader.readAsDataURL($(this)[0].files[0]);
+            } else {
+                alert("This browser does not support FileReader.");
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

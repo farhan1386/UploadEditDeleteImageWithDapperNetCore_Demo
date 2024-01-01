@@ -1,0 +1,52 @@
+﻿@model IEnumerable<UploadEditDeleteImageWithDapperNetCore_Demo.Models.SpeakerModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<h3 class="text-center text-uppercase">list of speakers</h3>
+
+<p style="float:right;">
+    <a asp-action="Create" class="btn btn-primary rounded-0"><i class="fa-solid fa-square-plus"></i> Add New</a>
+</p>
+<table class="table table-bordered table-striped">
+    <thead class="text-center text-uppercase bg-primary text-white">
+        <tr>
+            <th>@Html.DisplayNameFor(s => s.f_iid)</th>
+            <th>@Html.DisplayNameFor(s => s.f_speaker_picture)</th>
+            <th>@Html.DisplayNameFor(s => s.f_fname)</th>
+            <th>@Html.DisplayNameFor(s => s.f_lname)</th>
+            <th>@Html.DisplayNameFor(s => s.f_gender)</th>
+            <th>@Html.DisplayNameFor(s => s.f_speach_date)</th>
+            <th>@Html.DisplayNameFor(s => s.f_speach_time)</th>
+            <th>@Html.DisplayNameFor(s => s.f_speach_venue)</th>
+            <th>@Html.DisplayNameFor(s => s.f_create_date)</th>
+            <th>@Html.DisplayNameFor(s => s.f_update_date)</th>
+            <th>Action(s)</th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.f_iid</td>
+                <td>
+                    <a href="@Url.Action("Details","Speakers",new { id=item.f_uid })"><img src="~/Uploads/@item.f_speaker_picture" alt="speaker-img" height="35" width="35" /></a>
+                </td>
+                <td>@item.f_fname</td>
+                <td>@item.f_lname</td>
+                <td>@item.f_gender</td>
+                <td>@item.f_speach_date.ToString("dd-MMM-yyyy")</td>
+                <td>@item.f_speach_time.ToString("hh:mm")</td>
+                <td>@item.f_speach_venue</td>
+                <td>@item.f_create_date?.ToString("dd-MM-yyyy hh:mm:ss:ff")</td>
+                <td>@item.f_update_date?.ToString("dd-MM-yyyy hh:mm:ss:ff")</td>
+                <td>
+                    <a href="@Url.Action("Edit","Speakers",new { id=item.f_uid })" class="btn btn-sm btn-primary"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a href="@Url.Action("Delete","Speakers",new { id=item.f_uid })" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+            }
+    </tbody>
+</table>

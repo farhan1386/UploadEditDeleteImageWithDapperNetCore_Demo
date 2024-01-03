@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.IO;
 using UploadEditDeleteImageWithDapperNetCore_Demo.Models;
 using UploadEditDeleteImageWithDapperNetCore_Demo.Repositories.Interface;
 using UploadEditDeleteImageWithDapperNetCore_Demo.ViewModels;
@@ -45,6 +44,8 @@ namespace UploadEditDeleteImageWithDapperNetCore_Demo.Controllers
             {
                 return NotFound();
             }
+            string imageUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + "/Uploads/" + speakers.f_existing_photo;
+            ViewBag.ExistImage = imageUrl;
             return View(speakers);
         }
         public IActionResult Create()
@@ -104,6 +105,8 @@ namespace UploadEditDeleteImageWithDapperNetCore_Demo.Controllers
             {
                 return NotFound();
             }
+            string imageUrl = $"{this.Request.PathBase}" + "/Uploads/" + speaker.f_speaker_picture;
+            ViewBag.ExistImage = imageUrl;
             return View(speakerExtended);
         }
 
@@ -160,6 +163,8 @@ namespace UploadEditDeleteImageWithDapperNetCore_Demo.Controllers
             {
                 return NotFound();
             }
+            string imageUrl = $"{this.Request.PathBase}" + "/Uploads/" + speaker.f_speaker_picture;
+            ViewBag.ExistImage = imageUrl;
             return View(speakerExtended);
         }
 
@@ -169,6 +174,7 @@ namespace UploadEditDeleteImageWithDapperNetCore_Demo.Controllers
         {
             var speaker = await unitOfWork.Speakers.Find(id);
             var CurrentImage = Path.Combine(environment.WebRootPath, "Uploads", speaker.f_speaker_picture);
+            ViewBag.ExistImage = CurrentImage;
             if (System.IO.File.Exists(CurrentImage))
             {
                 System.IO.File.Delete(CurrentImage);

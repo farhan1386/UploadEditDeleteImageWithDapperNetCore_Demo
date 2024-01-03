@@ -59,14 +59,12 @@
                         <img src="~/Uploads/@Model.f_existing_photo" alt="speaker-img" height="350" width="285" />
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="card-footer">
             <div style="float:right;">
                 <form asp-action="Delete">
                     <button type="submit" class="btn btn-md btn-danger rounded-0"><i class="fa-solid fa-trash"></i> Delete</button>
-                    @*  <input type="submit" value="Delete" class="btn btn-md btn-danger rounded-0" /> *@
                     <a href="@Url.Action("Edit", "Speakers", new { id = Model.f_uid })" class="btn btn-md btn-primary rounded-0"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                     <a href="@Url.Action("Index", "Speakers")" class="btn btn-md btn-primary rounded-0"><i class="fa-solid fa-backward"></i> Back to List</a>
                 </form>

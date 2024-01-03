@@ -18,6 +18,8 @@ namespace UploadEditDeleteImageWithDapperNetCore_Demo.Controllers
         public async Task<IActionResult> Index()
         {
             var speakers = await unitOfWork.Speakers.Get();
+            string imageUrl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}" + "/Uploads/" + speakers?.FirstOrDefault().f_speaker_picture;
+            ViewBag.SpeakerImage = imageUrl;
             return View(speakers);
         }
         public async Task<IActionResult> Details(Guid id)
@@ -120,7 +122,7 @@ namespace UploadEditDeleteImageWithDapperNetCore_Demo.Controllers
 
             if (model.f_speaker_photo != null)
             {
-                var CurrentImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", speaker.f_speaker_picture);
+                var CurrentImage = Path.Combine(environment.WebRootPath, "Uploads", speaker.f_speaker_picture);
                 if (System.IO.File.Exists(CurrentImage))
                 {
                     System.IO.File.Delete(CurrentImage);
@@ -166,7 +168,7 @@ namespace UploadEditDeleteImageWithDapperNetCore_Demo.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var speaker = await unitOfWork.Speakers.Find(id);
-            var CurrentImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", speaker.f_speaker_picture);
+            var CurrentImage = Path.Combine(environment.WebRootPath, "Uploads", speaker.f_speaker_picture);
             if (System.IO.File.Exists(CurrentImage))
             {
                 System.IO.File.Delete(CurrentImage);
